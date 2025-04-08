@@ -7,20 +7,53 @@
 // all of your function definitions should be in this file now
 
 class Matrix {
-public:
-    Matrix(std::size_t N);
-    Matrix(std::vector<std::vector<int>> nums);
+    private:
+        // Member variables
+        std::vector<std::vector<double>> data;
+        int size; // initialize to 0
 
-    Matrix operator+(const Matrix &rhs) const;
-    Matrix operator*(const Matrix &rhs) const;
-    void set_value(std::size_t i, std::size_t j, int n);
-    int get_value(std::size_t i, std::size_t j) const;
-    int get_size() const;
-    int sum_diagonal_major() const;
-    int sum_diagonal_minor() const;
-    void swap_rows(std::size_t r1, std::size_t r2);
-    void swap_cols(std::size_t c1, std::size_t c2);
-    void print_matrix() const;
+    public:
+        // Constructor
+        Matrix(int n = 0);
+        
+        // File operations
+        void loadFromFile(const std::string& filename);
+        
+        // Display
+        void display() const;
+        
+        // Matrix operations
+        Matrix operator+(const Matrix& other) const;
+        Matrix operator*(const Matrix& other) const;
+        
+        // Diagonal sums
+        double mainDiagonalSum() const;
+        double secondaryDiagonalSum() const;
+        
+        // Row/column operations
+        void swapRows(int row1, int row2);
+        void swapColumns(int col1, int col2);
+        void updateElement(int row, int col, double value);
+        
+        // Accessors
+        int getSize() const { return size; }
+        double getElement(int row, int col) const { return data[row][col]; }
 };
+
+// Polymorphic functions for swapping rows/columns
+void swapRowsPoly(std::vector<int>& matrix, int n, int row1, int row2);
+void swapRowsPoly(std::vector<double>& matrix, int n, int row1, int row2);
+void swapColumnsPoly(std::vector<int>& matrix, int n, int col1, int col2);
+void swapColumnsPoly(std::vector<double>& matrix, int n, int col1, int col2);
+
+
+// Template function for updating elements
+template <typename T>
+void updateElementTemplate(std::vector<T>& matrix, int n, int row, int col, T value) {
+    if (row < 0 || row >= n || col < 0 || col >= n) {
+        throw std::out_of_range("Matrix indices out of bounds");
+    }
+    matrix[row * n + col] = value;
+}
 
 #endif // __MATRIX_HPP__
